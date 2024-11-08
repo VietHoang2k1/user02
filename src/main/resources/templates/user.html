@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">User Management</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/index}">Home</a>
+                </li>
+
+                <!-- Hiển thị liên kết User Management nếu người dùng có vai trò ADMIN -->
+                <li th:if="${isAdmin}">
+                    <a class="nav-link" th:href="@{/users}">Quản lý người dùng</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+
+            <!-- Hiển thị thông tin chào mừng người dùng -->
+            <span class="navbar-text text-white">
+                Hello, <span th:text="${#authentication.name}"></span>!
+            </span>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1>Registered Users</h1>
+
+    <!-- Nút thêm người dùng mới -->
+    <!-- Nút thêm người dùng mới -->
+    <div class="mb-3">
+        <a href="#" class="btn btn-primary" th:href="@{/users/manage}">Add User</a>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <!-- Nút chỉnh sửa người dùng -->
+                <a class="btn btn-warning btn-sm" th:href="@{/users/manage(id=${user.id})}">Edit</a>
+
+                <!-- Nút xóa người dùng -->
+                <a class="btn btn-danger btn-sm" th:href="@{/users/delete(id=${user.id})}"
+                   onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
